@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Suite">
-  <test  name="Test">
+<suite name="Cogmento Test Automation Suite">
+  <test  name="Cogmento Test Automation Test">
     <classes>
       <class name="com.crm.qa.cogmento.testcases.HomePageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.DocumentsPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.CallsPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.CalendarPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.ContactsPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.DealPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.TasksPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.CasesPageTest"/>
+      <class name="com.crm.qa.cogmento.testcases.CompaniesPageTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
