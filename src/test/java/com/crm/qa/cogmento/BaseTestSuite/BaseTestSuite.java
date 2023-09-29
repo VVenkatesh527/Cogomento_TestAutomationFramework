@@ -4,7 +4,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.crm.dev.DriverManager.DriverManager;
-import com.crm.dev.PageObjects.LoginPage;
+import com.crm.report.ExtentReport.ExtentReport;
 
 public class BaseTestSuite extends DriverManager {
 
@@ -16,7 +16,8 @@ public class BaseTestSuite extends DriverManager {
 		openBrowser();
 		deleteAllCookies();
 		maxmizeWindow();
-		LoginPage loginPage = new LoginPage(driver());
+		ExtentReport.initReports();
+		pageObjectsIntilization();
 		loginPage.launchCogmentoApplication();
 		pageLoadTimeOut(40);
 		implicitWait(20);
@@ -25,6 +26,9 @@ public class BaseTestSuite extends DriverManager {
 	@AfterMethod
 	public void tearDown() {
 		
+		
+		destroyPageObjects();
+		ExtentReport.tearDownReports();
 		if(driver()!=null) {
 			driver().quit();
 		}
