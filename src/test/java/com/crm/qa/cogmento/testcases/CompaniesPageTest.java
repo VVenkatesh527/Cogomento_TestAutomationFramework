@@ -1,5 +1,8 @@
 package com.crm.qa.cogmento.testcases;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -27,7 +30,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify Companies page has navigated once Companies feature Is clicked Validate Companies page Title should be Companies");
 		Log.info("Verify Companies page has navigated once Companies feature Is clicked Validate Companies page Title should be Companies");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		companiesPage.MenuNavigation("Companies");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, companiesPage.companiesTitle.isDisplayed());
 		Assert.assertEquals(companiesPage.companiesTitle.getAttribute("InnerText"),"Contacts");
 		ExtentLogger.pass("Verify Companies page has navigated once Companies feature Is clicked Validate Companies page Title should be Companies");
@@ -40,7 +43,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify companies page has navigated verify Headers contains dropdown,showfilter, Export, Create this all Headers should enabled and displayed");
 		Log.info("Verify companies page has navigated verify Headers contains dropdown,showfilter, Export, Create this all Headers should enabled and displayed");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, companiesPage.dropdownBtn.isEnabled()||contactsPage.dropdownBtn.isDisplayed());
 		Assert.assertEquals(companiesPage.showFilterBtn.getAttribute("InnerText"),"Show Filters");
 		Assert.assertEquals(companiesPage.exportBtn.getAttribute("InnerText"),"Export");
@@ -54,7 +57,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify contacts page contains dropdown button click on it, it should contain default view in the dropdown");
 		Log.info("Verify contacts page contains dropdown button click on it, it should contain default view in the dropdown");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, contactsPage.dropdownBtn.isEnabled()||contactsPage.dropdownBtn.isDisplayed());
 		contactsPage.dropdownBtn.click();
 		Assert.assertEquals(true, contactsPage.defaultViewField.isDisplayed()||contactsPage.defaultViewField.isEnabled());
@@ -67,7 +70,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify and Validate Export Feature in the companies page");
 		Log.info("Verify and Validate Export Feature in the companies page");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		companiesPage.MenuNavigation("Companies");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, companiesPage.exportBtn.isDisplayed() && companiesPage.exportBtn.isEnabled());
 		companiesPage.exportBtn.click();
 		driver().switchTo().alert().accept();
@@ -81,7 +84,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify and Validate Create feature in the companies page and how many ways to create companies feature");
 		Log.info("Verify and Validate Create feature in the companies page and how many ways to create companies feature");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		companiesPage.MenuNavigation("Companies");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, companiesPage.createBtn.isDisplayed() && companiesPage.createBtn.isEnabled());
 		companiesPage.createBtn.click();
 		Assert.assertEquals(true, companiesPage.createNewCompanyTitle.isDisplayed());
@@ -95,7 +98,7 @@ public class CompaniesPageTest extends BaseTestSuite{
 		ExtentReport.createTest("Verify and Validate showFilter Feature in the companies page");
 		Log.info("Verify and Validate showFilter Feature in the companies page");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		companiesPage.MenuNavigation("Companies");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
 		Assert.assertEquals(true, companiesPage.showFilterBtn.isDisplayed()||companiesPage.showFilterBtn.isEnabled());
 		companiesPage.showFilterBtn.click();
 		Assert.assertEquals(true, companiesPage.hideFilterBtn.isDisplayed()||companiesPage.hideFilterBtn.isEnabled());
@@ -104,4 +107,34 @@ public class CompaniesPageTest extends BaseTestSuite{
 		Assert.assertEquals(true, companiesPage.searchDropdownBtn.isDisplayed()&&companiesPage.searchDropdownBtn.isEnabled());
 		ExtentLogger.pass("Verify and Validate showFilter Feature in the companies page");
 	}
+	
+	@Test(description = "Verify Create button of Companies feature and create new Event")
+	public void tc_cogmento_companiespage_088() {
+		
+		ExtentReport.createTest("Verify Create button of Companies feature and create new Event");
+		Log.info("Verify Create button of Companies feature and create new Event");
+		homePage.MenuNavigation(companiesPage.companiesBtn,"Companies");
+		companiesPage.createBtn.click();
+		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("Name","random");
+		formData.put("Street","random");
+		formData.put("City","Ahemadabad");
+		formData.put("State","Gujarat");
+		formData.put("PostCode","random");
+		formData.put("Country","India");
+		formData.put("Category", "random");
+
+		Map<String,String> companyMap = companiesPage.createFormData(formData);
+		System.out.println(companyMap.get("Name"));
+		Assert.assertEquals(true, companiesPage.createEventSaveBtn.isDisplayed(),"Save button is displayed");
+		Assert.assertEquals(false,companiesPage.mandatoryFieldErrorMessage.isDisplayed(),"ErrorMessage button is displayed");
+		Assert.assertEquals(true,companiesPage.createEventCancelBtn.isDisplayed(),"Cancel button is displayed");
+		companiesPage.createEventCancelBtn.click();
+		ExtentLogger.pass("Verify Create button of Companies feature and create new Event");
+	}
+	
+	
+	
+	
+	
 }

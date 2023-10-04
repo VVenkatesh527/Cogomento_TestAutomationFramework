@@ -32,25 +32,26 @@ public class HomePage extends DriverManager {
 	public WebElement settingsIcon;
 
 	@FindBy(xpath = "//span[contains(text(),'Home') and @class='item-text']")
-	public static WebElement homeBtn;
+	public WebElement homeBtn;
 
 	@FindBy(xpath = "//div[@class='menu-item-wrapper']")
-	public static List<WebElement> menuFeaturesList;
+	public List<WebElement> menuFeaturesList;
 
 	@FindBy(xpath = "//div[starts-with(@class,'menu transition')]//a//span[@class='text']")
-	public static List<WebElement> settingFeatures;
-
+	public List<WebElement> settingFeatures;
+	
+	
 	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void MenuNavigation(String menu) { //a
+	public void MenuNavigation(WebElement element,String menu) { 
 
-		navigateToMenu();
+		navigateToMenu(element);
 		
 		try {
 			if (menu.length() > 1 && !menu.isBlank()) {
-				WebElement element = driver()
+				element = driver()
 						.findElement(By.xpath("//span[contains(text(),'" + menu + "') and @class='item-text']"));
 				element.click();
 			}
@@ -60,30 +61,31 @@ public class HomePage extends DriverManager {
 		}
 	}
 
-	public void navigateToMenu() {
+	public void navigateToMenu(WebElement menu) {
 
 		Actions action = new Actions(driver());
 		try {
-			if (homeBtn.isDisplayed()) {
-				action.moveToElement(homeBtn).build().perform();
+			if (menu.isDisplayed()) {
+				action.moveToElement(menu).build().perform();
 			} else {
 				ExtentLogger.fail("Unable to Navigate HomeMenu");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
-
-	public List<String> settingListElements() {
+		
+	public List<String> convertWebElementToStringList(List<WebElement> elements) {
 
 		List<String> strList = new ArrayList<>();
 
-		for (int list = 0; list < settingFeatures.size(); list++) {
+		for (int list = 0; list < elements.size(); list++) {
 
-			strList.add(settingFeatures.get(list).getAttribute("textContent"));
+			strList.add(elements.get(list).getAttribute("textContent"));
 		}
 		return strList;
 	}
-
+	
+	
+	
 }

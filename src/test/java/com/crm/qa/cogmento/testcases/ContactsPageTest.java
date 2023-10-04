@@ -17,9 +17,10 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify contacts page is displayed and Enabled should be clickable when concure is moved to Menu tab");
 		Log.info("Verify contacts page is displayed and Enabled should be clickable when concure is moved to Menu tab");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
+		homePage.navigateToMenu(contactsPage.contactsBtn);
 		Assert.assertEquals(true, contactsPage.contactsBtn.isDisplayed());
-		Assert.assertEquals(contactsPage.contactsBtn.getAttribute("InnerText"),"Contacts");
 		ExtentLogger.pass("Verify contacts page is displayed and Enabled should be clickable when concure is moved to Menu tab");
+	
 	}
 
 	@Test(description = "Verify contacts page has navigated once contacts feature Is clicked Validate Contacts page Title should be Contacts")
@@ -28,9 +29,9 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify contacts page has navigated once contacts feature Is clicked Validate Contacts page Title should be Contacts");
 		Log.info("Verify contacts page has navigated once contacts feature Is clicked Validate Contacts page Title should be Contacts");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
 		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
-		Assert.assertEquals(contactsPage.contactsTitle.getAttribute("InnerText"),"Contacts");
+		Assert.assertEquals(contactsPage.contactsTitle.getAttribute("textContent"),"Contacts");
 		ExtentLogger.pass("Verify contacts page has navigated once contacts feature Is clicked Validate Contacts page Title should be Contacts");
 		
 	}
@@ -41,9 +42,10 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify contacts page has navigated verify Headers contains dropdown,showfilter, Export, Create this all Headers should enabled and displayed");
 		Log.info("Verify contacts page has navigated verify Headers contains dropdown,showfilter, Export, Create this all Headers should enabled and displayed");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
-		Assert.assertEquals(true, contactsPage.dropdownBtn.isEnabled()||contactsPage.dropdownBtn.isDisplayed());
-		Assert.assertEquals(contactsPage.showFilterBtn.getAttribute("InnerText"),"Show Filters");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
+		Assert.assertEquals(true, contactsPage.dropdownBtn.isEnabled());
+		Assert.assertEquals(true, contactsPage.dropdownBtn.isDisplayed());
+		Assert.assertEquals("Show Filters",basePage.getElementValue(contactsPage.contactsBtn));
 		Assert.assertEquals(contactsPage.exportBtn.getAttribute("InnerText"),"Export");
 		Assert.assertEquals(contactsPage.createBtn.getAttribute("InnerText"),"Create");
 		ExtentLogger.pass("Verify contacts page has navigated verify Headers contains dropdown,showfilter, Export, Create this all Headers should enabled and displayed");
@@ -56,7 +58,7 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify contacts page contains dropdown button click on it, it should contain default view in the dropdown");
 		Log.info("Verify contacts page contains dropdown button click on it, it should contain default view in the dropdown");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
 		Assert.assertEquals(true, contactsPage.dropdownBtn.isEnabled()||contactsPage.dropdownBtn.isDisplayed());
 		contactsPage.dropdownBtn.click();
 		Assert.assertEquals(true, contactsPage.defaultViewField.isDisplayed()||contactsPage.defaultViewField.isEnabled());
@@ -70,7 +72,7 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify and Validate showFilter Feature in the contacts page");
 		Log.info("Verify and Validate showFilter Feature in the contacts page");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
 		Assert.assertEquals(true, contactsPage.showFilterBtn.isDisplayed()||contactsPage.showFilterBtn.isEnabled());
 		contactsPage.showFilterBtn.click();
 		Assert.assertEquals(true, contactsPage.hideFilterBtn.isDisplayed()||contactsPage.hideFilterBtn.isEnabled());
@@ -86,7 +88,7 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify and Validate Export Feature in the contacts page");
 		Log.info("Verify and Validate Export Feature in the contacts page");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
 		Assert.assertEquals(true, contactsPage.exportBtn.isDisplayed() && contactsPage.exportBtn.isEnabled());
 		contactsPage.exportBtn.click();
 		driver().switchTo().alert().accept();
@@ -100,11 +102,42 @@ public class ContactsPageTest extends BaseTestSuite {
 		ExtentReport.createTest("Verify and Validate Create feature in the contacts page and how many ways to create contacts feature");
 		Log.info("Verify and Validate Create feature in the contacts page and how many ways to create contacts feature");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
-		contactsPage.MenuNavigation("Contacts");
-		Assert.assertEquals(true, contactsPage.createBtn.isDisplayed() && contactsPage.createBtn.isEnabled());
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
+		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
 		contactsPage.createBtn.click();
 		Assert.assertEquals(true, contactsPage.createNewContactTitle.isDisplayed());
 		ExtentLogger.pass("Verify and Validate Create feature in the contacts page and how many ways to create contacts feature");
+	}
+	
+	@Test(description = "Verify and Validate Create New Contact form page fill the form with some mandatory field ")
+	public void tc_cogmento_contactspage_019() {
+		
+		ExtentReport.createTest("Verify and Validate Create New Contact form page fill the form with some mandatory field ");
+		Log.info("Verify and Validate Create New Contact form page fill the form with some mandatory field");
+		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
+		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
+		Assert.assertEquals(true, contactsPage.contactsTitle.isEnabled());
+		contactsPage.createBtn.click();
+		Assert.assertEquals(true, contactsPage.createNewContactTitle.isDisplayed());
+		String output =basePage.selectDropdownValue(contactsPage.categoryBtn, "category","Lead");
+		Assert.assertEquals("Lead",output);
+		ExtentLogger.pass("Verify and Validate Create New Contact form page fill the form with some mandatory field using selectDropdownValue Method");
+	}
+	
+	@Test(description = "Verify and Validate Create New Contact form page fill the form with some mandatory field ")
+	public void tc_cogmento_contactspage_020() {
+		
+		ExtentReport.createTest("Verify and Validate Create New Contact form page fill the form with some mandatory field ");
+		Log.info("Verify and Validate Create New Contact form page fill the form with some mandatory field");
+		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
+		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
+		Assert.assertEquals(true, contactsPage.contactsTitle.isEnabled());
+		contactsPage.createBtn.click();
+		Assert.assertEquals(true, contactsPage.createNewContactTitle.isDisplayed());
+		basePage.getRandomCompanyName(contactsPage.companyBtn);
+		ExtentLogger.pass("Verify and Validate Create New Contact form page fill the form with some mandatory field using selectDropdownValue Method");
 	}
 
 }

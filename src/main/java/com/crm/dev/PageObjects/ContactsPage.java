@@ -1,15 +1,11 @@
 package com.crm.dev.PageObjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.crm.dev.DriverManager.DriverManager;
-import com.crm.dev.utility.Log;
-import com.crm.report.ExtentReport.ExtentLogger;
 
 public class ContactsPage  extends  DriverManager{
 	
@@ -46,39 +42,18 @@ public class ContactsPage  extends  DriverManager{
 	@FindBy(xpath = "//span[normalize-space()='Create New Contact' and contains(@class,'select')]")
 	public WebElement createNewContactTitle;
 	
+	@FindBy(xpath = "//div//label[contains(text(),'Category')]")
+	public WebElement categoryBtn;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Company')]//following-sibling::div[@name='company']")
+	public WebElement companyBtn;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Close Date')]//following-sibling::div//input[@type='text']")
+	public WebElement closedDateLocator;
 	
 	public ContactsPage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void MenuNavigation(String menu) { //a
-
-		navigateToMenu();
-		
-		try {
-			if (menu.length() > 1 && !menu.isBlank()) {
-				WebElement element = driver()
-						.findElement(By.xpath("//span[contains(text(),'" + menu + "') and @class='item-text']"));
-				element.click();
-			}
-		} catch (Exception e) {
-			Log.info(menu + "is not present in menu navigation ");
-			e.printStackTrace();
-		}
-	}
-
-	public void navigateToMenu() {
-
-		Actions action = new Actions(driver());
-		try {
-			if (contactsBtn.isDisplayed()) {
-				action.moveToElement(contactsBtn).build().perform();
-			} else {
-				ExtentLogger.fail("Unable to Navigate HomeMenu");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 }

@@ -33,6 +33,7 @@ public class DriverManager {
 	protected static String reportPath = System.getProperty("user.dir")+"//Reports//AutomationExtentReport.html";
 
 	protected static LoginPage loginPage = null;
+	protected static BasePage basePage = null;
 	protected static HomePage homePage = null;
 	protected static TableOperator tableOperator = null;
 	protected static CalendarPage calendarPage = null;
@@ -52,6 +53,7 @@ public class DriverManager {
 	public static void pageObjectsIntilization() {
 	
 		loginPage = new LoginPage(driver());
+		basePage = new BasePage();
 		homePage = new HomePage(driver());
 		tableOperator = new TableOperator();
 		calendarPage = new CalendarPage(driver());
@@ -76,6 +78,7 @@ public class DriverManager {
 		dealPage = null;
 		tasksPage = null;
 		documentsPage = null;
+		basePage = null;
 	}
 
 	public static void createInstance(String input) {
@@ -118,6 +121,9 @@ public class DriverManager {
 	public static void implicitWait(int timeout) {
 
 		driver().manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+	}
+	public static void explicityWait() {
+		
 	}
 
 	public static void pageLoadTimeOut(int timeout) {

@@ -67,8 +67,10 @@ public class HomePageTest extends BaseTestSuite {
 		Assert.assertEquals(true, homePage.settingsIcon.isDisplayed() || homePage.settingsIcon.isEnabled());
 		homePage.settingsIcon.click();
 		Log.info("Clicked on Settings Icon");
-		List<String> expectedList = homePage.settingListElements();
+		List<String> expectedList = homePage.convertWebElementToStringList(homePage.settingFeatures);
 		Assert.assertEquals(actualList, expectedList);
 
 	}
+	
+	
 }

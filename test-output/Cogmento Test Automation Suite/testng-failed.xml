@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Cogmento Test Automation Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Cogmento Test Automation Test(failed)">
+    <classes>
+      <class name="com.crm.qa.cogmento.testcases.CompaniesPageTest">
+        <methods>
+          <include name="tc_cogmento_companiespage_028"/>
+          <include name="tc_cogmento_companiespage_027"/>
+          <include name="tc_cogmento_companiespage_023"/>
+          <include name="tc_cogmento_companiespage_022"/>
+          <include name="setUp"/>
+          <include name="tc_cogmento_companiespage_021"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.CompaniesPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.ContactsPageTest">
+        <methods>
+          <include name="tc_cogmento_contactspage_017"/>
+          <include name="setUp"/>
+          <include name="tc_cogmento_contactspage_011"/>
+          <include name="tearDown"/>
+          <include name="tc_cogmento_contactspage_013"/>
+          <include name="tc_cogmento_contactspage_012"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.ContactsPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.DealPageTest">
+        <methods>
+          <include name="tc_cogmento_dealspage_038"/>
+          <include name="tc_cogmento_dealspage_083"/>
+          <include name="setUp"/>
+          <include name="tc_cogmento_dealspage_084"/>
+          <include name="tc_cogmento_dealspage_032"/>
+          <include name="tc_cogmento_dealspage_087"/>
+          <include name="tc_cogmento_dealspage_085"/>
+          <include name="tc_cogmento_dealspage_031"/>
+          <include name="tc_cogmento_dealspage_086"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.DealPageTest -->
+    </classes>
+  </test> <!-- Cogmento Test Automation Test(failed) -->
+</suite> <!-- Failed suite [Cogmento Test Automation Suite] -->

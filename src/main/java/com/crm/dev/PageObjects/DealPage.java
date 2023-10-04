@@ -1,17 +1,16 @@
 package com.crm.dev.PageObjects;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.openqa.selenium.By;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.crm.dev.DriverManager.DriverManager;
-import com.crm.dev.utility.Log;
-import com.crm.report.ExtentReport.ExtentLogger;
 
 public class DealPage extends DriverManager {
 
@@ -85,9 +84,39 @@ public class DealPage extends DriverManager {
 	
 	@FindBy(xpath = "//button[contains(text(),'Board')]")
 	public WebElement boardBtn;
+	
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Close Date')]//following-sibling::div//input[@type='text']")
+	public WebElement closedDateLocator;
 
 	@FindBy(xpath = "//table[starts-with(@class,'ui celled')]//thead/tr/th/following-sibling::th")
 	public List<WebElement> colCount;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Status')]//following-sibling::div[@name='status']")
+	public WebElement statusBtn;
+	
+	@FindBy(xpath = "//div[contains(@name,'company')]//input[contains(@class,'search') and contains(@autocomplete,'off')]")
+	public WebElement companyBtn;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Amount')]//following-sibling::div//input[@name='amount']")
+	public WebElement amountBtn;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Company')]//following-sibling::div//div[@role='option']")
+	public WebElement companydropdown;
+	
+	
+	@FindBy(xpath = "//div//span[contains(@class,'selectable')]")
+	public WebElement createNewCaseTitle;
+	
+	@FindBy(xpath = "//div//input[contains(@name,'title') and contains(@autocomplete,'new-password')]")
+	public WebElement createDealTitleLocator;
+	
+	@FindBy(xpath = "//button[contains(text(),'Cancel')]//i[contains(@class,'cancel')]")
+	public WebElement createEventCancelBtn;
+
+	@FindBy(xpath = "//button[contains(text(),'Save')]//i[contains(@class,'save')]")
+	public WebElement createEventSaveBtn;
+	
 
 	
 	public DealPage(WebDriver driver) {
@@ -95,39 +124,69 @@ public class DealPage extends DriverManager {
 		PageFactory.initElements(driver,this);
 	}
 	
-	public void MenuNavigation(String menu) { //a
-
-		navigateToMenu();
+	public Map<String,String> createDeal(Map<String,String> formData) {
+		
+		Map<String,String> createdData = new HashMap<>();
+		String title_value="",company_value="",amount_value="", closedDate_value = "";
+		try {
+			title_value = formData.get("Title");
+			if(title_value.equalsIgnoreCase("random")||title_value.isEmpty()) {
+				title_value = "Deal_Automation_"+RandomStringUtils.randomNumeric(4);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		createDealTitleLocator.sendKeys(title_value);
+		createdData.put("Title", title_value);
 		
 		try {
-			if (menu.length() > 1 && !menu.isBlank()) {
-				WebElement element = driver()
-						.findElement(By.xpath("//span[contains(text(),'" + menu + "') and @class='item-text']"));
-				element.click();
+			company_value = formData.get("Company");
+			if(company_value.equalsIgnoreCase("random")|| company_value.isEmpty()) {
+				company_value = basePage.getRandomCompanyName(companyBtn);
 			}
-		} catch (Exception e) {
-			Log.info(menu + "is not present in menu navigation ");
+			
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void navigateToMenu() {
-
-		Actions action = new Actions(driver());
+		companyBtn.sendKeys(company_value);
+		createdData.put("Company", company_value);
+		
 		try {
-			if (dealsBtn.isDisplayed()) {
-				action.moveToElement(dealsBtn).build().perform();
-			} else {
-				ExtentLogger.fail("Unable to Navigate HomeMenu");
+			amount_value = formData.get("Amount");
+			if(amount_value.equalsIgnoreCase("random") || amount_value.isEmpty()) {
+				amount_value = RandomStringUtils.randomAlphabetic(6);
 			}
+			
+			amountBtn.sendKeys(amount_value);
+			
+			createdData.put("Amount", amount_value);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		//closedDate_value
+		try {
+			
+			String closedDate="";
+			
+			closedDate_value = formData.get("ClosedDate");
+
+			if (closedDate_value.equalsIgnoreCase("dd MMMM yyyy") && !closedDate_value.isEmpty()) {
+				
+				closedDate = basePage.selectDateAndTime(closedDate_value , "Current", 0);
+				
+			}
+			createdData.put("ClosedDate", closedDate);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		return createdData;	
 	}
 	
-	public void createDeal() {
-		
-		
-	}
+	
+	
 }
