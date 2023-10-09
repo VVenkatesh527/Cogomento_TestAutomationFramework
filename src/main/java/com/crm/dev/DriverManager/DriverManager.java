@@ -8,8 +8,11 @@ import java.time.Duration;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.crm.dev.PageObjects.CalendarPage;
 import com.crm.dev.PageObjects.CallsPage;
@@ -28,6 +31,7 @@ public class DriverManager {
 
 	public static FileInputStream inputStream = null;
 	public static Properties prop = null;
+	public static WebDriverWait wait =null;
 	public static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
 	private static final String defaultPropertiesFile = System.getProperty("user.dir")+"//src//resources//config//config.properties";
 	protected static String reportPath = System.getProperty("user.dir")+"//Reports//AutomationExtentReport.html";
@@ -122,8 +126,11 @@ public class DriverManager {
 
 		driver().manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
 	}
-	public static void explicityWait() {
+	
+	public static void visibilityOfElement(WebElement element,long Seconds) {
 		
+		wait = new WebDriverWait(driver(), Duration.ofSeconds(Seconds));
+		wait.until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public static void pageLoadTimeOut(int timeout) {

@@ -43,8 +43,34 @@ public class HomePageTest extends BaseTestSuite {
 		 * List<String> add all menus actual List WebElement list and convert to
 		 * List<String> expectList
 		 */
+	}
+	
+	@Test(description = "Verify and get all settings feature options available after click on to the setting button")
+	public void tc_cogmento_homepage_003() {
+
+		ExtentReport.createTest("Verify all Options are available when concure is moved to Menu tab");
+		Log.info("Verify all Options are available when concure is moved to Menu tab");
+		Assert.assertEquals(13,basePage.getElementValue(homePage.menuFeaturesList).size());
+		List<String> actualList =new ArrayList<>();
+		actualList.add("Home");
+		actualList.add("Calendar");
+		actualList.add("Contacts");
+		actualList.add("Companies");
+		actualList.add("Deals");
+		actualList.add("Tasks");
+		actualList.add("Cases");
+		actualList.add("Calls");
+		actualList.add("Documents");
+		actualList.add("Email");
+		actualList.add("Campaigns");
+		actualList.add("Forms");
+		actualList.add("Reports");
+		Assert.assertEquals(actualList, basePage.getElementValue(homePage.menuFeaturesList));
+		ExtentLogger.pass("Verify all Options are available when concure is moved to Menu tab");
 
 	}
+	
+	
 
 	@Test(description = "Verify and get all settings feature options available after click on to the setting button")
 	public void tc_cogmento_homepage_004() {
@@ -69,6 +95,7 @@ public class HomePageTest extends BaseTestSuite {
 		Log.info("Clicked on Settings Icon");
 		List<String> expectedList = homePage.convertWebElementToStringList(homePage.settingFeatures);
 		Assert.assertEquals(actualList, expectedList);
+		ExtentLogger.pass("Verify and get all settings feature options available after click on to the setting button");
 
 	}
 	

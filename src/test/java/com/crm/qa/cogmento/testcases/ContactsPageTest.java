@@ -1,5 +1,9 @@
 package com.crm.qa.cogmento.testcases;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -119,25 +123,87 @@ public class ContactsPageTest extends BaseTestSuite {
 		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
 		Assert.assertEquals(true, contactsPage.contactsTitle.isEnabled());
 		contactsPage.createBtn.click();
+		
 		Assert.assertEquals(true, contactsPage.createNewContactTitle.isDisplayed());
 		String output =basePage.selectDropdownValue(contactsPage.categoryBtn, "category","Lead");
 		Assert.assertEquals("Lead",output);
 		ExtentLogger.pass("Verify and Validate Create New Contact form page fill the form with some mandatory field using selectDropdownValue Method");
 	}
 	
-	@Test(description = "Verify and Validate Create New Contact form page fill the form with some mandatory field ")
+	@Test(description = "Verify and Validate Create New Contact form page fill the form withoutmandatory field using selectDropdownValue Method")
 	public void tc_cogmento_contactspage_020() {
 		
-		ExtentReport.createTest("Verify and Validate Create New Contact form page fill the form with some mandatory field ");
-		Log.info("Verify and Validate Create New Contact form page fill the form with some mandatory field");
+		ExtentReport.createTest("Verify and Validate Create New Contact form page fill the form without mandatory field using selectDropdownValue Method");
+		Log.info("Verify and Validate Create New Contact form page fill the form without mandatory field using selectDropdownValue Method");
 		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
 		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
 		Assert.assertEquals(true, contactsPage.contactsTitle.isDisplayed());
-		Assert.assertEquals(true, contactsPage.contactsTitle.isEnabled());
+		Assert.assertEquals(true, contactsPage.contactsTitle.isEnabled()); 
 		contactsPage.createBtn.click();
+		HashMap<String,String> formData = new HashMap<String,String>();
+		formData.put("Email","random");
+		formData.put("Phone", RandomStringUtils.randomNumeric(10));
+		contactsPage.createContact(formData);
+		contactsPage.createEventSaveBtn.click();
+		Assert.assertEquals(true, contactsPage.errorMessageFirstNameLocator.isDisplayed());
+		Assert.assertEquals(true, contactsPage.errorMessageLastNameLocator.isDisplayed());
 		Assert.assertEquals(true, contactsPage.createNewContactTitle.isDisplayed());
 		basePage.getRandomCompanyName(contactsPage.companyBtn);
-		ExtentLogger.pass("Verify and Validate Create New Contact form page fill the form with some mandatory field using selectDropdownValue Method");
+		ExtentLogger.pass("Verify and Validate Create New Contact form page fill the form without mandatory field using selectDropdownValue Method");
 	}
+	
+	@Test(description = "Verify and Validate Create New contacts form page fill the form with some mandatory field ",enabled = true)
+	public void tc_cogmento_contactspage_029() {
+		
+		HashMap<Integer,HashMap<String,String>> expectedData = new HashMap<>();
+		HashMap<Integer,HashMap<String,String>> actualData =  new HashMap<>();
+		ExtentReport.createTest("Verify and Validate Create New contacts form page fill the form with some mandatory field ");
+		Log.info("Verify and Validate Create New contacts form page fill the form with some mandatory field ");
+		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
+		homePage.MenuNavigation(contactsPage.contactsBtn,"Contacts");
+		contactsPage.createBtn.click();
+		HashMap<String,String> formData = new HashMap<String,String>();
+		formData.put("FirstName","Test");
+		formData.put("LastName","random");
+		formData.put("Email","random");
+		formData.put("Phone", RandomStringUtils.randomNumeric(6));
+		//formData.put("ClosedDate", "dd MMMM yyyy");
+		HashMap<String,String> contactMap = contactsPage.createContact(formData);
+		contactsPage.createEventSaveBtn.click();
+		homePage.MenuNavigation(contactsPage.contactsBtn, "Contacts");
+		tableOperator.applyFiltersToColumns("FirstName", "Equals",contactMap.get("FirstName"));
+		//1
+		 int rowCount = tableOperator.getRowCount();
+		if(rowCount>=1) {
+			actualData = tableOperator.getTableData();
+		}
+		else
+			{
+			   ExtentLogger.fail("No Data Displayed in Deal's Grid");
+			   Assert.assertFalse(rowCount<1);
+			}
+		expectedData.put(rowCount, contactMap);      
+		Assert.assertEquals(actualData, expectedData);
+        ExtentLogger.pass("Verify and Validate Create New Company form page fill the form with some mandatory field ");
+	}
+	
+	@Test(description = "Verify and Validate Create New contacts form page contains Category dropdown select value click on save button",enabled = true)
+	public void tc_cogmento_contactspage_030() {
+		
+		ExtentReport.createTest("Verify and Validate Create New contacts form page contains Category dropdown select value click on save button");
+		Log.info("Verify and Validate Create New contacts form page contains Category dropdown select value click on save button");
+		Assert.assertEquals(driver().getTitle(), "Cogmento CRM");
+		homePage.MenuNavigation(contactsPage.contactsBtn, "Contacts");
+		contactsPage.createBtn.click();
+		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("Category", "random");
+		//formData.put("ClosedDate", "dd MMMM yyyy");
+		HashMap<String,String> dealMap = dealPage.createDeal(formData);
+		dealPage.createEventSaveBtn.click();
+		Assert.assertEquals(true, contactsPage.errorMessageFirstNameLocator.isDisplayed());
+		Assert.assertEquals(true, contactsPage.errorMessageLastNameLocator.isDisplayed());		
+		ExtentLogger.pass("Verify and Validate Create New contacts form page contains Category dropdown select value click on save button");
+	}
+
 
 }

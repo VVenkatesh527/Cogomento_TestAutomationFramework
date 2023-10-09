@@ -1,7 +1,7 @@
 package com.crm.dev.PageObjects;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
@@ -27,23 +27,35 @@ public class CompaniesPage extends DriverManager {
 
 	@FindBy(xpath = "//button[normalize-space()='Show Filters']")
 	public WebElement showFilterBtn;
+	
+	@FindBy(xpath = "//button[normalize-space()='Add Filter Row']")
+	public WebElement addFilterRowFilterBtn;
+	
+	@FindBy(xpath = "//button[contains(@class,'ui small')]//i[contains(@class,'minus')]")
+	public WebElement minusOfAddFilterBtn;
+
+	@FindBy(xpath = "//div[contains(@class,'search')]//i[contains(@class,'dropdown')]")
+	public WebElement searchDropdownBtn;
+	
+	@FindBy(xpath = "//div[contains(@class,'visible menu')]//div[@class='item']")
+	public List<WebElement> sreachShowFilterDropdown;
 
 	@FindBy(xpath = "//button[normalize-space()='Hide Filters']")
 	public WebElement hideFilterBtn;
 
-	@FindBy(xpath = "//button[normalize-space()='Add Filter Row']")
-	public WebElement addFilterRowFilterBtn;
-
-	@FindBy(xpath = "//div[contains(text(),'Search')]")
-	public WebElement searchDropdownBtn;
-
 	@FindBy(xpath = "//button[normalize-space()='Export']")
 	public WebElement exportBtn;
+	
+	@FindBy(xpath = "//button[contains(text(),'OK')]")
+	public WebElement okBtn;
+	
+	@FindBy(xpath = "//button[contains(text(),'Cancel')]")
+	public WebElement cancelBtn;
 
 	@FindBy(xpath = "//a//button[contains(text(),'Create')]")
 	public WebElement createBtn;
 
-	@FindBy(xpath = "//span[normalize-space()='Create New Company' and contains(@class,'select')]")
+	@FindBy(xpath = "//span[contains(@class,'select')]")
 	public WebElement createNewCompanyTitle;
 
 	// formData
@@ -91,35 +103,34 @@ public class CompaniesPage extends DriverManager {
 		PageFactory.initElements(driver, this);
 	}
 
-	public Map<String, String> createFormData(Map<String, String> formData) {
+	public HashMap<String, String> createCompany(HashMap<String, String> formData) {
 
-		Map<String, String> createdData = new HashMap<>();
+		HashMap<String, String> data = new HashMap<>();
 		String name_value = "", category_value = " ", streetAddress_value = "", cityAddress_value = "",stateAddress_value = "", postCode_value = "", selectCountry_value = "";
+		
 		try {
 			name_value = formData.get("Name");
 			if(name_value.equalsIgnoreCase("random") || name_value.isEmpty()) {
 				name_value = "Test_Automation_" + RandomStringUtils.randomAlphanumeric(2);
 			}
-			
 			createEventTitleLocator.sendKeys(name_value);
 			
-			createdData.put("Name", name_value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		data.put("Name", name_value);
 
-		// streetaddress_input
+		// streetaddress_value
 		try {
 			streetAddress_value = formData.get("Street");
-			if (streetAddress_value.equalsIgnoreCase("Random")) {
+			if (streetAddress_value.equalsIgnoreCase("Random")||streetAddress_value.isEmpty()) {
 				streetAddress_value = RandomStringUtils.randomAlphabetic(8);
 		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		streetAddressLocator.sendKeys(streetAddress_value);
-		implicitWait(10);
-		createdData.put("Street", streetAddress_value);
+		data.put("Street", streetAddress_value);
 
 		// cityAddress_value
 		try {
@@ -132,7 +143,7 @@ public class CompaniesPage extends DriverManager {
 		}
 		cityAddressLocator.sendKeys(cityAddress_value);
 		
-		createdData.put("cityAddress_input", cityAddress_value);
+		data.put("cityAddress_input", cityAddress_value);
 
 		// stateAddress_value
 		try {
@@ -146,7 +157,7 @@ public class CompaniesPage extends DriverManager {
 		}
 		stateAddressLocator.sendKeys(stateAddress_value);
 		
-		createdData.put("State", stateAddress_value);
+		data.put("State", stateAddress_value);
 
 		// postCode_value
 		try {
@@ -159,38 +170,22 @@ public class CompaniesPage extends DriverManager {
 		}
 		postCodeAddressLocator.sendKeys(postCode_value);
 		
-		createdData.put("PostCode", postCode_value);
+		data.put("PostCode", postCode_value);
 
 		// selectCountry
 		try {
 			selectCountry_value = formData.get("Country");
-			
-			if (selectCountry_value.equalsIgnoreCase("India") && !selectCountry_value.isEmpty()) {
-
+			if (selectCountry_value.equalsIgnoreCase("India") ||selectCountry_value.isEmpty()) {
 				selectCountry_value = basePage.getRandomCountryName(dropDownCountryLocatorBtn, "country", "India");
-
-				
-					createdData.put("Country", selectCountry_value);
 			
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		
 		}
+		data.put("Country", selectCountry_value);
 		
-		// category
-		try {
-			category_value = formData.get("Category");
-			if (!category_value.equalsIgnoreCase("Random")) {
-				category_value = basePage.selectRandomDropDownValue("Category");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		createdData.put("Category", category_value);
-
-		return createdData;
+		return data;
 	}
 	
 	

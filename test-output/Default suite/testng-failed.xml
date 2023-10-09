@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.crm.qa.cogmento.testcases.DealPageTest">
+      <class name="com.crm.qa.cogmento.testcases.CompaniesPageTest">
         <methods>
+          <include name="tc_cogmento_companiespage_024"/>
           <include name="setUp"/>
-          <include name="tc_cogmento_dealspage_088"/>
           <include name="tearDown"/>
         </methods>
-      </class> <!-- com.crm.qa.cogmento.testcases.DealPageTest -->
+      </class> <!-- com.crm.qa.cogmento.testcases.CompaniesPageTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

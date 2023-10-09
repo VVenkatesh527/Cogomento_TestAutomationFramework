@@ -1,8 +1,6 @@
 package com.crm.qa.cogmento.testcases;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -15,29 +13,9 @@ import com.crm.report.ExtentReport.ExtentReport;
 
 public class flakeTest extends BaseTestSuite{
 
-	@Test(description = "")
-	public void tc_cogmento_homepage_001() {
+	
 		
-		ExtentReport.createTest("Verify and get all settings feature options available after click on to the setting button");
-		Log.info("Verify and get all settings feature options available after click on to the setting button");
-		
-		List<String> actualList = new ArrayList<>();
-		actualList.add("Settings");
-		actualList.add("Products");
-		actualList.add("Import");
-		actualList.add("VCM");
-		actualList.add("AI");
-		actualList.add("Content Templates");
-		actualList.add("Tools");
-		actualList.add("Documentation");
-		actualList.add("Log Out");
-				
-		Assert.assertEquals(true, homePage.settingsIcon.isDisplayed() || homePage.settingsIcon.isEnabled());
-		homePage.settingsIcon.click();
-		Log.info("Clicked on Settings Icon");
-	}
-		
-		@Test(description = "Verify Create button of Deals feature and create new Deal")
+		@Test(description = "")
 		public void tc_cogmento_companiespage_088() {
 			
 			ExtentReport.createTest("Verify Create button of Deals feature and create new Deal");
@@ -45,11 +23,11 @@ public class flakeTest extends BaseTestSuite{
 			homePage.MenuNavigation(dealPage.dealsBtn,"Deals");
 			dealPage.createBtn.click();
 			Map<String,String> formData = new HashMap<String,String>();
-			formData.put("Title","random");
-			formData.put("Company","Test_Automation");
+			formData.put("Title",basePage.getRandomTitle());
+			formData.put("Company","random");
 			formData.put("Amount", "600000");
-			formData.put("ClosedDate", "closedDate");
-			
+			formData.put("ClosedDate", "Future~43");
+			System.out.println();
 			Map<String,String> dealMap = dealPage.createDeal(formData);
 			System.out.println(dealMap.get("Amount"));
 			System.out.println(dealMap.get("ClosedDate"));

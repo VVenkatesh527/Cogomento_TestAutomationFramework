@@ -34,7 +34,7 @@ public class HomePage extends DriverManager {
 	@FindBy(xpath = "//span[contains(text(),'Home') and @class='item-text']")
 	public WebElement homeBtn;
 
-	@FindBy(xpath = "//div[@class='menu-item-wrapper']")
+	@FindBy(xpath = "//div[@class='menu-item-wrapper']//span[@class='item-text']")
 	public List<WebElement> menuFeaturesList;
 
 	@FindBy(xpath = "//div[starts-with(@class,'menu transition')]//a//span[@class='text']")
@@ -79,9 +79,9 @@ public class HomePage extends DriverManager {
 
 		List<String> strList = new ArrayList<>();
 
-		for (int list = 0; list < elements.size(); list++) {
+		for (WebElement e : elements) {
 
-			strList.add(elements.get(list).getAttribute("textContent"));
+			strList.add(e.getAttribute("textContent"));
 		}
 		return strList;
 	}

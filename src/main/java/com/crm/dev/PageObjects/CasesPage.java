@@ -2,7 +2,6 @@ package com.crm.dev.PageObjects;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
@@ -26,14 +25,53 @@ public class CasesPage extends  DriverManager {
 	@FindBy(xpath = "//label[contains(text(),'Close Date')]")
 	public WebElement closeDateKey;
 	
-	@FindBy(xpath = "//span[normalize-space()='Create New Case' and contains(@class,'select')]")
-	public WebElement createNewCasesTitle;
-	
 	@FindBy(xpath = "//div//label[contains(text(),'Status')]//following-sibling::div[@name='status']")
 	public WebElement statusBtn;
 	
+	@FindBy(xpath = "//i[contains(@class,'dropdown icon')]//parent::div[@name='view']")
+	public WebElement viewDropdownBtn;
+	
+	@FindBy(xpath = "//div//span[contains(text(),'Default View')]")
+	public WebElement defaultViewBtn;
+	
+	@FindBy(xpath = "//button[normalize-space()='Show Filters']")
+	public WebElement showFiltersBtn;
+	
+	@FindBy(xpath = "//button[normalize-space()='Hide Filters']")
+	public WebElement hideFiltersBtn;
+	
+	@FindBy(xpath = "//button[normalize-space()='Add Filter Row']")
+	public WebElement addFilterRowFilterBtn;
+	
+	@FindBy(xpath = "//button[contains(@class,'ui small')]//i[contains(@class,'minus')]")
+	public WebElement minusOfAddFilterBtn;
+
+	@FindBy(xpath = "//div[contains(@class,'search')]//i[contains(@class,'dropdown')]")
+	public WebElement searchDropdownBtn;
+	
+	@FindBy(xpath = "//div[contains(@class,'visible menu')]//div[@class='item']")
+	public List<WebElement> sreachShowFilterDropdown;
+	
+	@FindBy(xpath = "//button[normalize-space()='Export']")
+	public WebElement exportBtn;
+	
+	@FindBy(xpath = "//button[contains(text(),'OK')]")
+	public WebElement okBtn;
+	
+	@FindBy(xpath = "//button[contains(text(),'Cancel')]")
+	public WebElement cancelBtn;
+	
+	@FindBy(xpath = "//div[contains(text(),'Deals Summ')]")
+	public WebElement homePageDealsummaryLocator;
+	
+	@FindBy(xpath = "//div//p[contains(text(),'Press OK')]")
+	public WebElement popMessage;
+	
 	@FindBy(xpath = "//button[normalize-space()='Create']")
 	public WebElement createBtn;
+	
+	@FindBy(xpath = "//span[contains(text(),'Cases')]//parent::a//following-sibling::button//i[contains(@class,'plus')]")
+	public WebElement createUsingPlusBtn;
 	
 	@FindBy(xpath = "//div//span[contains(@class,'selectable')]")
 	public WebElement createNewCaseTitle;
@@ -58,6 +96,9 @@ public class CasesPage extends  DriverManager {
 			@FindBy(xpath = "//div//label[contains(text(),'Status')]//following::div[@name='status']")
 			public List<WebElement>  statusDropDownLocator;
 			
+			@FindBy(xpath = "//input[contains(@name,'title')]")
+			public WebElement caseTitleLocator;
+			
 			@FindBy(xpath = "//div//label[contains(text(),'Company')]//following::div[@name='company']//i[contains(@class,'dropdown')]")
 			public WebElement companyDownArrowBtn;
 			
@@ -73,77 +114,63 @@ public class CasesPage extends  DriverManager {
 		PageFactory.initElements(driver,this);
 	}
 	
-	public Map<String, String> createCaseForm(Map<String,String> caseFormMap) {
+	public HashMap<String, String> createCase(HashMap<String,String> formData) {
 		
-		Map<String,String> data = new HashMap<>();
-		String title_input = "",status_input="",type_input="",company_input="";
+		HashMap<String,String> data = new HashMap<>();
+		String title_value = "",status_value="",type_value="",company_value="";
 		
+		//Title
 		try {  
-			title_input = caseFormMap.get("Title_input");
-		if(title_input==" " || title_input==null) 
-			title_input="";
+			title_value = formData.get("Title");
+		if(title_value.equalsIgnoreCase("Random") || title_value.isBlank()) 
+			title_value = "Automation_"+RandomStringUtils.randomAlphanumeric(2);
 		}
 		catch
 		(Exception e) {
 			e.printStackTrace();
 			}
-		if(!title_input.equalsIgnoreCase("Random")) { 
-			title_input = "Automation_"+RandomStringUtils.randomAlphanumeric(2);
-		} 
-		implicitWait(10);
-		
-		data.put("Title_input", title_input);
+		caseTitleLocator.sendKeys(title_value);
+		data.put("Title", title_value);
 		
 		//Status
 				try {  
-					status_input = caseFormMap.get("Status_input");
-				if(status_input==" " || status_input==null) 
-					status_input="";
+					status_value = formData.get("Status");
+				if(status_value.equalsIgnoreCase("Random")|| status_value.isEmpty()) 
+					status_value = basePage.selectRandomDropDownValue("Status");
 				}
 				catch
 				(Exception e) {
 					e.printStackTrace();
 					}
-				if(!status_input.equalsIgnoreCase("Random")) { 
-					status_input = basePage.selectRandomDropDownValue("Status");
-				} 
-				implicitWait(10);
 				
-				data.put("Status_input", status_input);
+				data.put("Status", status_value);
 				
 		//type
 		try {  
-			type_input = caseFormMap.get("Type_input");
-		if(type_input==" " || type_input==null) 
-			type_input="";
+			type_value = formData.get("Type");
+		if(type_value.equalsIgnoreCase("Random")||type_value.isEmpty()) { 
+			type_value = basePage.selectRandomDropDownValue("Type");
+		}
 		}
 		catch
 		(Exception e) {
 			e.printStackTrace();
 			}
-		if(!type_input.equalsIgnoreCase("Random")) { 
-			type_input = basePage.selectRandomDropDownValue("Type");
-		} 
-		implicitWait(10);
 		
-		data.put("Type_input", type_input);
+		data.put("Type", type_value);
 		
 		//Company
 		try {  
-			company_input = caseFormMap.get("Company_input");
-		if(company_input==" " || company_input==null) 
-			company_input="";
+			company_value = formData.get("Company");
+		if(company_value.equalsIgnoreCase("Random")|| company_value.isEmpty()) 
+			company_value = basePage.selectRandomDropDownValue("Company");
 		}
 		catch
 		(Exception e) {
 			e.printStackTrace();
 			}
-		if(!company_input.equalsIgnoreCase("Random")) { 
-			company_input = basePage.selectRandomDropDownValue("Company");
-		} 
-		implicitWait(10);
 		
-		data.put("Company_input", company_input);
+		data.put("Company", company_value);
 		
 		return data;
 	}

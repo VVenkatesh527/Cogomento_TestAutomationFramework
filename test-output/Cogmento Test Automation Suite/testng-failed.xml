@@ -5,37 +5,62 @@
     <classes>
       <class name="com.crm.qa.cogmento.testcases.CompaniesPageTest">
         <methods>
-          <include name="tc_cogmento_companiespage_028"/>
-          <include name="tc_cogmento_companiespage_027"/>
-          <include name="tc_cogmento_companiespage_023"/>
-          <include name="tc_cogmento_companiespage_022"/>
+          <include name="tc_cogmento_companiespage_024"/>
           <include name="setUp"/>
-          <include name="tc_cogmento_companiespage_021"/>
           <include name="tearDown"/>
         </methods>
       </class> <!-- com.crm.qa.cogmento.testcases.CompaniesPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.CalendarPageTest">
+        <methods>
+          <include name="tc_cogmento_calendarpage_008"/>
+          <include name="setUp"/>
+          <include name="tc_cogmento_calendarpage_009"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.CalendarPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.CallsPageTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tc_cogmento_callspage_077"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.CallsPageTest -->
       <class name="com.crm.qa.cogmento.testcases.ContactsPageTest">
         <methods>
+          <include name="tc_cogmento_contactspage_029"/>
           <include name="tc_cogmento_contactspage_017"/>
           <include name="setUp"/>
-          <include name="tc_cogmento_contactspage_011"/>
+          <include name="tc_cogmento_contactspage_020"/>
+          <include name="tc_cogmento_contactspage_030"/>
           <include name="tearDown"/>
           <include name="tc_cogmento_contactspage_013"/>
           <include name="tc_cogmento_contactspage_012"/>
         </methods>
       </class> <!-- com.crm.qa.cogmento.testcases.ContactsPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.TasksPageTest">
+        <methods>
+          <include name="tc_cogmento_taskspage_053"/>
+          <include name="setUp"/>
+          <include name="tc_cogmento_taskspage_054"/>
+          <include name="tearDown"/>
+          <include name="tc_cogmento_taskspage_057"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.TasksPageTest -->
+      <class name="com.crm.qa.cogmento.testcases.CasesPageTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tc_cogmento_casespage_066"/>
+          <include name="tc_cogmento_casespage_061"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.crm.qa.cogmento.testcases.CasesPageTest -->
       <class name="com.crm.qa.cogmento.testcases.DealPageTest">
         <methods>
-          <include name="tc_cogmento_dealspage_038"/>
-          <include name="tc_cogmento_dealspage_083"/>
+          <include name="tc_cogmento_dealspage_035"/>
           <include name="setUp"/>
-          <include name="tc_cogmento_dealspage_084"/>
-          <include name="tc_cogmento_dealspage_032"/>
-          <include name="tc_cogmento_dealspage_087"/>
-          <include name="tc_cogmento_dealspage_085"/>
-          <include name="tc_cogmento_dealspage_031"/>
-          <include name="tc_cogmento_dealspage_086"/>
+          <include name="tc_cogmento_dealspage_041"/>
           <include name="tearDown"/>
+          <include name="tc_cogmento_dealspage_034"/>
         </methods>
       </class> <!-- com.crm.qa.cogmento.testcases.DealPageTest -->
     </classes>

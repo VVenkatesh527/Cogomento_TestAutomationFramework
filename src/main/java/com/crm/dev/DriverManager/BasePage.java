@@ -2,6 +2,7 @@ package com.crm.dev.DriverManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.Random;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.crm.dev.utility.Log;
 import com.crm.report.ExtentReport.ExtentLogger;
@@ -101,18 +101,15 @@ public class BasePage extends DriverManager {
 		navigateToLocator(element);
 
 		try {
-			if (!value.isBlank() && value.isEmpty()) {
+			if (!value.isBlank()) {
 
-				for (int i = 1; i < listOfWebelements.size(); i++) {
+				for (WebElement elements : listOfWebelements) {
 
-					List<WebElement> listOfWebelements1 = driver().findElements(By.xpath(
-							"//div[contains(@name,'" + formElement + "')]//span[contains(@class,text)][" + i + "]"));
-
-					strList.add(listOfWebelements1.get(i).getAttribute("textContent"));
+					strList.add(elements.getAttribute("textContent"));
 
 					if (strList.contains(value)) {
 
-						listOfWebelements.get(i).click();
+						elements.click();
 						implicitWait(6);
 					}
 				}
@@ -128,20 +125,17 @@ public class BasePage extends DriverManager {
 
 		String input = " ";
 		List<String> strList = new ArrayList<>();
-		List<WebElement> listOfDropdownElements = driver().findElements(
-				By.xpath("//div//label[contains(text(),'Company')]//following-sibling::div//div[@role='option']"));
+		List<WebElement> listOfDropdownElements = driver().findElements(By.xpath("//div//label[contains(text(),'Company')]//following-sibling::div//div[@role='option']"));
 		Random random = new Random();
-
 		dropDownLocator.click();
 		JSSendKeys(dropDownLocator, "t");
 		implicitWait(5);
 
 		if (listOfDropdownElements.size() > 1) {
-
 			for (int list = 0; list < listOfDropdownElements.size(); list++) {
 
-				List<WebElement> listOfDropdownElements1 = driver().findElements(By
-						.xpath("//div[contains(@name,' Company')]//span[contains(@class,text)]["+ list + "]"));
+				List<WebElement> listOfDropdownElements1 = driver().findElements(
+						By.xpath("//div[contains(@name,' Company')]//span[contains(@class,text)][" + list + "]"));
 
 				strList.add(listOfDropdownElements1.get(list).getAttribute("textContent"));
 			}
@@ -157,19 +151,20 @@ public class BasePage extends DriverManager {
 		String input = " ";
 		Random random = new Random();
 		List<WebElement> listOfDropdownElements = driver()
-				.findElements(By.xpath("//div[contains(@name,'" + formElement + "')]//span[contains(@class,text)]"));
+				.findElements(By.xpath("//div[contains(@name,'"+formElement+"')]//div[contains(@name,'"+formElement+"')]"));
 		List<String> strList = new ArrayList<>();
+		int randomSize = random.nextInt(listOfDropdownElements.size());
 
-		for (int list = 0; list < listOfDropdownElements.size(); list++) {
-
-			List<WebElement> listOfDropdownElements1 = driver().findElements(By
-					.xpath("//div[contains(@name,'" + formElement + "')]//span[contains(@class,text)][" + list + "]"));
-			strList.add(listOfDropdownElements1.get(list).getAttribute("textContent"));
+		for(WebElement list : listOfDropdownElements) {
+			strList.add(list.getAttribute("textContent"));
 		}
-
-		int randomSize = random.nextInt(strList.size());
-
+//		for (int list = 0; list < listOfDropdownElements.size(); list++) {
+//			List<WebElement> listOfDropdownElements1 = driver().findElements(By.xpath("//div[contains(@name,'" + formElement + "')]//div[contains(@name,'"+formElement+"')][" + list + "]"));
+//			strList.add(listOfDropdownElements1.get(list).getAttribute("textContent"));	}
 		input = strList.get(randomSize);
+		if(listOfDropdownElements.get(randomSize).getAttribute("textContent")==input) {
+			listOfDropdownElements.get(randomSize).click();
+		}
 
 		return input;
 	}
@@ -177,22 +172,41 @@ public class BasePage extends DriverManager {
 	public String getRandomCompanyName(List<WebElement> listedElements, WebElement sendkeysElement,String formElement) {
 
 		String input = " ";
+		Random random = new Random();
 		List<String> strList = new ArrayList<>();
-
+		sendkeysElement.click();
 		sendkeysElement.sendKeys("t");
 
 		for (int list = 0; list < listedElements.size(); list++) {
-
 			List<WebElement> listOfDropdownElements = driver().findElements(By
-					.xpath("//div[contains(@name,'" + formElement + "')]//span[contains(@class,text)][" + list + "]"));
+					.xpath("//div[contains(@name,'" + formElement + "')]//div[contains(@name,'"+formElement+"')][" + list + "]"));
 			strList.add(listOfDropdownElements.get(list).getAttribute("textContent"));
 		}
-		Random random = new Random();
-
 		int randomSize = random.nextInt(strList.size());
 
 		input = strList.get(randomSize);
 
+		return input;
+	}
+	
+	public String getRandomDeal(WebElement sendkeysElement,String formElement) {
+
+		String input = " ";
+		Random random = new Random();
+		List<String> strList = new ArrayList<>();
+		sendkeysElement.click();
+		sendkeysElement.sendKeys("t");
+		List<WebElement> listOfDropdownElements = driver().findElements(By.xpath("//div[contains(@name,'"+formElement+"')]//div[contains(@name,'"+formElement+"')]"));
+		int randomSize = random.nextInt(listOfDropdownElements.size());
+
+		for(WebElement list : listOfDropdownElements) {
+			
+			strList.add(list.getAttribute("textContent"));
+		}
+		input = strList.get(randomSize);
+		if(listOfDropdownElements.get(randomSize).getAttribute("textContent")==input) {
+			listOfDropdownElements.get(randomSize).click();
+		}
 		return input;
 	}
 
@@ -200,7 +214,7 @@ public class BasePage extends DriverManager {
 
 		List<String> strList = new ArrayList<>();
 		List<WebElement> listOfWebelements = driver()
-				.findElements(By.xpath("//div[contains(@name,'" + formElement + "')]//span[contains(@class,text)]"));
+				.findElements(By.xpath("//div[contains(@name,'" + formElement + "')]//div[contains(@name,'"+formElement+"')]"));
 
 		navigateToLocator(element);
 
@@ -240,7 +254,7 @@ public class BasePage extends DriverManager {
 				"//div[contains(@name,'country')]//input[contains(@class,'search')]//following-sibling::div[contains(@role,'listbox')]//div[contains(@role,'option')]//span[contains(text(),'India')]"));
 		WebElement enterCountryNameLocator = driver()
 				.findElement(By.xpath("//div[contains(@name,'country')]//input[contains(@class,'search')]"));
-		
+
 		JSClick(dropDownElement);
 		enterCountryNameLocator.sendKeys("India");
 
@@ -265,99 +279,102 @@ public class BasePage extends DriverManager {
 
 		return input;
 	}
-	
-	/**
-	 * 
-	 * @param days : To increase the number of days, normally it will give current, if you pass days as 0 or any number , 
-	 *                          it will add zero to the current Day.
-	 * @return
-	 */
-	
+
 	public String getDate(int days) {
-	
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMMM yyyy");
 		Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date()); // Using today's date
-		calendar.add(Calendar.DATE,days); // Adding 5 days
+		calendar.setTime(new Date()); // Using today's date
+		calendar.add(Calendar.DATE, days); // Adding 5 days
 		String output = sdf.format(calendar.getTime());
 		return output;
 	}
-	
-	/**
-	 *
-	 * @param input
-	 * @param day
-	 * @return
-	 */
-	
-	public String getCurrentOrFutureOrPastDate(String input,int day) {
 
-		String date = " ";
-		try {
-			if (input.isBlank() || input == " " || input.equals(null)) {
-				return input;
-			}
+	public String selectDateAndTime(int days, String time) {
 
-			switch (input.trim()) {
-
-			case "Future":
-				date = getDate(day);
-				break;
-			case "Previous":
-				date = getDate(day);
-				break;
-			case "Current":
-				date = getDate(day);
-				break;
-			default:
-				Log.info("Please Provide Valid Input Value ---> " + input);
-				break;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return date;
-
-	}
-	/**
-	 * 
-	 * @param dateFormat : format should be "dd MMMM yyyy"
-	 * @param input : Future or Previous or Current
-	 * @param days : to add the like 0 or 1 or 2. for Previous pass only -1
-	 * @return
-	 */
-
-	public String selectDateAndTime(String dateFormat,String input, int days) {
-
-		String current_date = getCurrentOrFutureOrPastDate(input, days);
-		WebElement datePicker = driver().findElement(By.xpath("//input[contains(@class,'-datepicker')]"));
-		WebElement datePickerPopper = driver().findElement(By.xpath("//div[@class='react-datepicker-popper']"));
+		String dateXpath = " ", date = " ";
+		WebElement dateElement = null;
+		WebElement datePicker = getWebElement("//div[contains(@class,'datepicker__input')]//input");
+		date = getDate(days);
 		try {
 			if (datePicker.isDisplayed()) {
+				visibilityOfElement(datePicker, 10);
 				datePicker.click();
-				Log.info("Clicked On Calendar Field");
-				if(datePickerPopper.isDisplayed()) {				
-					WebElement selectDate = driver().findElement(By.xpath("//div[contains(@class,'datepicker__day')"
-							+ " and contains(@aria-label,'"+current_date+"')]"));
-					selectDate.click();
-					Log.info("Clicking On " +current_date);
-				}
-				else
-				{
-					Log.info("Invalid Date ");
+				WebElement dateMonthPicker = getWebElement("//div[contains(@class,'datepicker__month')]");
+				try {
+					visibilityOfElement(dateMonthPicker, 10);
+					if (dateMonthPicker.isDisplayed()) {
+						//WebElement previousArrowBtn = basePage.getWebElement("//button//span[contains(@class,'navigation-icon--previous')]");
+						//WebElement nextArrowBtn = basePage.getWebElement("//button//span[contains(@class,'navigation-icon--next')]");
+						switch (time) {
+						case "Future":
+							do {
+								dateXpath = " ";
+								dateXpath = "//div[contains(@class,'datepicker__month')]//following::div[contains(@class,'datepicker__day') and contains(@aria-label,'<REPLACE>')]"
+										.replace("<REPLACE>", date);
+								dateElement = getWebElement(dateXpath);
+							} while (!getWebElement(dateXpath).isDisplayed());
+								if (dateElement.isDisplayed()) {
+									visibilityOfElement(dateElement, 5);
+									dateElement.click();
+								} else {
+									ExtentLogger.fail("Entered" + date + " Is Invalid");
+
+								}
+							
+							break;
+						case "Past":
+							WebElement pastDateElement = getWebElement(dateXpath);
+							if (pastDateElement.isDisplayed()) {
+								visibilityOfElement(pastDateElement, 5);
+								pastDateElement.click();
+							} else {
+								ExtentLogger.fail("Entered" + date + " Is Invalid");
+							}
+							break;
+						case "Current":
+							WebElement currentDateElement = getWebElement(dateXpath);
+							if (currentDateElement.isDisplayed()) {
+								visibilityOfElement(currentDateElement, 5);
+								currentDateElement.click();
+							} else {
+								ExtentLogger.fail("Entered" + date + " Is Invalid");
+							}
+							break;
+						default:
+							Log.info("Invalid Time is Passed " + time);
+							ExtentLogger.fail("Invalid Time is Passed " + time);
+							break;
+						}
+
+					}
+				} catch (Exception e) {
+					Log.info("Unable To Select Date, Month Calendar is Not Displayed");
+					ExtentLogger.fail("Unable To Select Date, Month Calendar is Not Displayed");
 				}
 			}
-			else {
-				Log.info("Invalid Date Format Is Passed ");
-			}
-		} catch (Exception e) {
-			ExtentLogger.fail("Date Format is Invalid" +dateFormat);
+		} catch (
+
+		Exception e) {
+			Log.info("Unable To Click On Calendar Form ");
+			ExtentLogger.fail("Unable To Click On Calendar Form ßß");
 			e.printStackTrace();
 		}
+		return date;
+	}
 
-		return current_date;
+	public WebElement getWebElement(String string) {
+
+		WebElement element = driver().findElement(By.xpath(string));
+		return element;
+	}
+
+	public String getRandomTitle() {
+
+		List<String> titleList = Arrays.asList("Mr.", "Mrs.", "Dr.", "Miss."); 
+		Random random = new Random();
+		int n = random.nextInt(titleList.size() - 1);
+		return titleList.get(n).toString();
 	}
 
 }

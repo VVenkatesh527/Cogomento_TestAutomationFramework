@@ -50,6 +50,12 @@ public class CalendarPage extends DriverManager {
 	@FindBy(xpath = "//button//span[contains(text(),'Agenda')]")
 	public WebElement agendaBtn;
 	
+	@FindBy(xpath = "//div[@class='rbc-event']//div[contains(text(),'MostView')]")
+	public WebElement mostViewEventBtn;
+	
+	@FindBy(xpath = "	//button[contains(@class,'ui icon')]//i[contains(@class,'edit icon')]")
+	public WebElement editEventBtn;
+
 	//formData
 	@FindBy(xpath = "//div//input[contains(@name,'title')]")
 	public WebElement createEventTitleLocator;
@@ -69,23 +75,29 @@ public class CalendarPage extends DriverManager {
 	@FindBy(xpath = "//div//label[contains(text(),'Company')]//following::div[@name='company']")
 	public WebElement companyDropDownLocator;
 	
-	@FindBy(xpath = "//div//label[contains(text(),'AlertBefore')]//following::div[@name='company']")
+	@FindBy(xpath = "//div//label[contains(text(),'Alert Before')]//following::div[contains(@class,'visible me')]//div[@class='item']")
 	public WebElement alertBeforeDropDownLocator;
 	
-	@FindBy(xpath = "//div//label[contains(text(),'Alert Via')]//following::div[@name='company']")
+	@FindBy(xpath = "//div//label[contains(text(),'Alert Via')]//following::div[@name='channels']//i[contains(@class,'drop')]")
+	public WebElement alertViaDropDownBtn;
+	
+	@FindBy(xpath = "//div//label[contains(text(),'Alert Via')]//following::div[@name='channels']//div//span[text()='SMS']")
 	public WebElement alertViaDropDownLocator;
 	
 	@FindBy(xpath = "//div//label[contains(text(),'Category')]//following::div[@name='category']//i[contains(@class,'dropdown')]")
 	public WebElement categoryDownArrowBtn;
 	
+	@FindBy(xpath = "//div[contains(@name,'minutesBefore')]//i[contains(@class,'dropdow')]")
+	public List<WebElement>  alertBeforeDownArrowBtn;
+	
 	@FindBy(xpath = "//div//label[contains(text(),'Alert Before')]//following::div[@name='minutesBefore']//i[contains(@class,'dropdown')]")
-	public WebElement alertBeforeDownArrowBtn;
+	public List<WebElement>  alertBeforeDown;
 	
 	@FindBy(xpath = "//div//label[contains(text(),'Alert Via')]//following::div[@name='channels']//i[contains(@class,'dropdown')]")
 	public WebElement alertViaDownArrowBtn;
 	
-	@FindBy(xpath = "//div[contains(@class,'rbc-event-') and contains(@title,'Bunty')]")
-	public WebElement calendarEventBuntyBtn;
+	@FindBy(xpath = "//div[contains(@class,'rbc-event-') and contains(@title,'Test_Automation_72')]")
+	public WebElement calendarEventBtn;
 
 	@FindBy(xpath = "//div[contains(@class,'rbc-event-') and contains(@title,'Cookies deals')]")
 	public WebElement calendarEventCookiesBtn;
@@ -98,100 +110,109 @@ public class CalendarPage extends DriverManager {
 		PageFactory.initElements(driver, this);
 	}
 	
-	public Map<String, String> createFormData(Map<String,String> formData) {
+	public Map<String, String> calendarFormData(Map<String,String> formData) {
 		
-		Map<String,String> data = new HashMap<>();
-		String title_input = "", category_input = " ",company_input = "",alertBefore_input ="",alertVia_input = "";
+		Map<String,String> calendarData = new HashMap<>();
+		String title_value = "", category_value = " ",company_value = "",alertBefore_value ="",alertVia_value = "";
+				//endDate_value="",startDate_value="";
 		
 		//Title
 		try {
-			title_input = formData.get("Title");
-		if(title_input==" " || title_input==null) 
-			title_input="";
+			title_value = formData.get("Title");
+		if( title_value.equalsIgnoreCase("random")||title_value.isEmpty()) {
+			title_value ="Test_Automation_"+RandomStringUtils.randomAlphanumeric(2);
 		}
-		catch
-		(Exception e) {
+		
+		}catch(Exception e) {
 			e.printStackTrace(); 
-			}
-			if(!title_input.equalsIgnoreCase("")) { 
-				title_input ="Test_Automation_"+RandomStringUtils.randomAlphanumeric(2);
 		} 
-
-			createEventTitleLocator.sendKeys(title_input);
-			implicitWait(10);
-			
-			data.put("Title",title_input);
+			createEventTitleLocator.sendKeys(title_value);
+			calendarData.put("Title",title_value);
 			
 			//category
 			try {  
-				category_input = formData.get("category_input");
-			if(category_input==" " || category_input==null) 
-				category_input="";
+				category_value = formData.get("Category");
+				if(category_value.equalsIgnoreCase("Random")||category_value.isEmpty()) { 
+					category_value = basePage.selectRandomDropDownValue("Category");
+				}
 			}
 			catch
 			(Exception e) {
 				e.printStackTrace();
 				}
-			if(!category_input.equalsIgnoreCase("Random")) { 
-					category_input = basePage.selectRandomDropDownValue("Category");
-			} 
-			implicitWait(10);
-			
-			data.put("Category", category_input);
+			calendarData.put("Category", category_value);
 			
 			//company
 			try {  
-				company_input = formData.get("category_input");
-			if(company_input==" " || company_input==null) 
-				company_input="";
+				company_value = formData.get("Company");
+			if(company_value.equalsIgnoreCase("Random")||company_value.isEmpty()) 
+				company_value = basePage.selectRandomDropDownValue("Company");
 			}
 			catch
 			(Exception e) {
 				e.printStackTrace();
 				}
-			if(!company_input.equalsIgnoreCase("Random")) { 
-				company_input = basePage.selectRandomDropDownValue("Company");
-			} 
-			implicitWait(10);
-			
-			data.put("Company", company_input);
+			calendarData.put("Company", company_value);
 			
 			//AlertVia
 			try {  
-				alertVia_input = formData.get("alertVia_input");
-			if(alertVia_input==" " || alertVia_input==null) 
-				alertVia_input="";
+				alertVia_value = formData.get("AlertVia");
+			if( alertVia_value.equalsIgnoreCase("Random")|| alertVia_value.isEmpty()) 
+				alertVia_value = "SMS";
 			}
 			catch
 			(Exception e) {
 				e.printStackTrace();
-				}
-			if(!alertVia_input.equalsIgnoreCase("Random")) { 
-				alertVia_input = basePage.selectRandomDropDownValue("Alert Via");
-			} 
-			implicitWait(10);
-			
-			data.put("Alert Via", alertVia_input);
+				} 			
+			calendarData.put("AlertVia", alertVia_value);
 			
 			//AlertBefore
 			try {  
-				alertBefore_input = formData.get("alertBefore_input");
-			if(alertBefore_input==" " || alertBefore_input==null) 
-				alertBefore_input="";
+				alertBefore_value = formData.get("AlertBefore");
+			if(alertBefore_value.equalsIgnoreCase("Random")|| alertBefore_value.isEmpty()) 
+				alertBefore_value = "30minutes";
 			}
 			catch
 			(Exception e) {
 				e.printStackTrace();
-				}
-			if(!alertBefore_input.equalsIgnoreCase("Random")) { 
-				alertBefore_input = basePage.selectRandomDropDownValue("Alert Before");
-			} 
-			implicitWait(10);
+				} 
+			calendarData.put("AlertBefore", alertBefore_value);
 			
-			data.put("Alert Before", company_input);
-			
-		   
-		return data;
+			//startDate
+//			try {
+//				
+//				String startDate="";
+//				
+//				startDate_value = formData.get("StartDate");
+//
+//				if (startDate_value.equalsIgnoreCase("d MMMM yyyy") && !startDate_value.isEmpty() || startDate_value.equalsIgnoreCase("dd MMMM yyyy") ) {
+//					
+//					//startDate = basePage.selectDateAndTime(startDate_value , "Future", 20);
+//					
+//				}
+//				calendarData.put("StartDate", startDate);
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//			//endDate_value
+//			try {
+//				
+//				String endDate="";
+//				endDate_value = formData.get("EndDate");
+//
+//				if (endDate_value.equalsIgnoreCase("dd MMMM yyyy") && !endDate_value.isEmpty() || endDate_value.equalsIgnoreCase("dd MMMM yyyy") ) {
+//					
+//					//endDate = basePage.selectDateAndTime(endDate_value , "Future", 5);
+//					
+//				}
+//				calendarData.put("EndDate", endDate);
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+		return calendarData;
 	}
 	
 	
