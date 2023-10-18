@@ -15,6 +15,7 @@ import com.crm.report.ExtentReport.ExtentReport;
 public class ContactsPageTest extends BaseTestSuite {
 	
 	
+	
 	@Test(description = "Verify contacts page is displayed and Enabled when concure is moved to Menu tab")
 	public void tc_cogmento_contactspage_011() {
 

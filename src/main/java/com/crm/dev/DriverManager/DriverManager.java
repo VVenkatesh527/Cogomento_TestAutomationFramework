@@ -33,7 +33,7 @@ public class DriverManager {
 	public static Properties prop = null;
 	public static WebDriverWait wait =null;
 	public static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
-	private static final String defaultPropertiesFile = System.getProperty("user.dir")+"//src//resources//config//config.properties";
+	private static final String defaultPropertiesFile = System.getProperty("user.dir")+"//src//main//resources//config//config.properties";
 	protected static String reportPath = System.getProperty("user.dir")+"//Reports//AutomationExtentReport.html";
 
 	protected static LoginPage loginPage = null;
@@ -74,6 +74,7 @@ public class DriverManager {
 		
 		loginPage = null;
 		homePage = null;
+		basePage = null;
 		tableOperator = null;
 		calendarPage = null;
 		callsPage = null;
@@ -82,7 +83,7 @@ public class DriverManager {
 		dealPage = null;
 		tasksPage = null;
 		documentsPage = null;
-		basePage = null;
+		
 	}
 
 	public static void createInstance(String input) {
